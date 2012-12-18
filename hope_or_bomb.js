@@ -26,7 +26,7 @@ window.onload = function() {
 	var heri;
 	game.onload = function(){
 		//物理世界の創造
-		physicsWorld = new PhysicsWorld(0, 9.8);
+		physicsWorld = new PhysicsWorld(0.0, 9.8);
 	  
 		background = new Background(); 
     
@@ -47,6 +47,15 @@ window.onload = function() {
 		hopeswitch.frame = 0;
 	  game.rootScene.addChild(hopeswitch);
 		
+		hopeswitch.ontouchstart = function(e){
+	  	 var hope = new PhyCircleSprite(16, DYNAMIC_SPRITE, 1.0, 0.5, 0.2, true);
+    hope.image = game.assets['hope.png'];
+    hope.frame = 0;
+    hope.position = { x: 88, y: 114 };
+    game.rootScene.addChild(hope);
+	  };
+		//ホープスイッチがタッチされたとき
+		
 		var bombswitch = new Sprite(61,61);
 		bombswitch.image = game.assets['bombswitch.png'];
 		bombswitch.x     = 249;
@@ -55,22 +64,19 @@ window.onload = function() {
 	  game.rootScene.addChild(bombswitch);
 	  
 	  //ボムスイッチがタッチされたとき
-	  bombswitch.ontouchstart = function(){
-	  	alert("残念ながら爆弾は出ない");
-	  };
-	  
-    var bomb = new PhyCircleSprite(8, DYNAMIC_SPRITE, 1.0, 0.5, 0.2,true);
+	  bombswitch.ontouchstart = function(e){
+	  	 var bomb = new PhyCircleSprite(16, DYNAMIC_SPRITE, 1.0, 0.5, 0.2, true);
     bomb.image = game.assets['bomb.png'];
     bomb.frame = 0;
-    bomb.position = { x: 160, y: 10 };
+    bomb.position = { x: 88, y: 114 };
     game.rootScene.addChild(bomb);
-    
-    game.rootScene.onentergrame = function(){
-    	
-	    world.step(game.fps)
-	    
-	    };
-    };
+	  };
+	  game.rootScene.addEventListener(enchant.Event.ENTER_FRAME, function(e) {
+	  
+	   physicsWorld.step(game.fps);
+	   
+	   });
+        };
   game.start();
   
 };
